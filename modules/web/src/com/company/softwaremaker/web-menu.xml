@@ -3,5 +3,42 @@
     <menu id="application-softwaremaker" insertBefore="administration" caption="mainMsg://menu_config.application-softwaremaker">
     </menu>
 
+    <menu id="administration"
+          icon="COG">
+        <item bean="softwaremaker_QuickBooksConnectorBean"
+              beanMethod="openOAuth2Page"
+              caption="Authorise in Quikbooks"/>
+        <separator/>
+        <item id="sec$User.browse"/>
+        <item id="sec$Group.browse"/>
+        <item id="sec$Role.browse"/>
+        <separator/>
+        <item id="sys$Category.browse"/>
+        <item id="sec$UserSessionEntity.browse"/>
+        <item id="sys$LockInfo.browse"/>
+        <item id="sys$FileDescriptor.browse"/>
+        <item id="sys$ScheduledTask.browse"/>
+        <item id="entityRestore"/>
+        <item id="entityInspector.browse"/>
+        <item id="appProperties"/>
+        <item id="jmxConsole"/>
+        <separator/>
+        <item id="entityLog"/>
+        <item id="sec$SessionLogEntry.browse"/>
+        <item id="sys$SendingMessage.browse"/>
+        <item id="serverLog"/>
+        <item id="screenProfiler"/>
+        <item id="performanceStatistics"/>
+    </menu>
 
+    <menu id="help"
+          icon="QUESTION_CIRCLE">
+        <item id="aboutWindow"
+              openType="DIALOG"/>
+        <item class="com.haulmont.cuba.web.app.domain.DomainProvider"
+              id="printDomain"/>
+        <separator/>
+        <item id="settings"/>
+        <item screen="helium_ThemeSettingsScreen"/>
+    </menu>
 </menu-config>
