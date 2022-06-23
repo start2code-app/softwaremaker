@@ -21,6 +21,7 @@ import com.intuit.oauth2.config.Scope;
 import com.intuit.oauth2.data.BearerTokenResponse;
 import com.intuit.oauth2.exception.InvalidRequestException;
 import com.intuit.oauth2.exception.OAuthException;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -41,6 +42,8 @@ public class QuickBooksConnectorServiceBean implements QuickBooksConnectorServic
     private QuickBooksTokenService quickBooksTokenService;
     @Inject
     private DataManager dataManager;
+    @Inject
+    private Logger log;
 
     @Override
     public String getOAuth2ConnectUri() {
@@ -61,14 +64,19 @@ public class QuickBooksConnectorServiceBean implements QuickBooksConnectorServic
 
     @Override
     public void exchangeToken(String authCode, String state, String realmId) {
+        log.info("exchangeToken called");
         String csrfToken = quickBooksTokenService.getLatestCsrf();
         if (!csrfToken.equals(state)) {
             throw new QuickBooksException("CSRF token mismatch");
         }
         OAuth2PlatformClient client = factory.getOAuth2PlatformClient();
+        log.info("OAuth2Platform Client = "+client.toString());
         try {
             BearerTokenResponse bearerTokenResponse = client.retrieveBearerTokens(authCode,
                     quickBooksConfig.getOAuth2RedirectUri());
+            log.info(bearerTokenResponse.toString());
+            log.info("Access token = "+bearerTokenResponse.getAccessToken());
+
             QuickBooksToken qbToken = dataManager.create(QuickBooksToken.class);
             qbToken.setRealmId(realmId);
             renewQuickBooksToken(qbToken, bearerTokenResponse);
