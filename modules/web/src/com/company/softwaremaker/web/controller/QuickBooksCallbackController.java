@@ -7,6 +7,7 @@ import com.haulmont.cuba.core.sys.SecurityContext;
 import com.haulmont.cuba.security.app.TrustedClientService;
 import com.haulmont.cuba.security.global.UserSession;
 import com.haulmont.cuba.web.auth.WebAuthConfig;
+import org.slf4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +18,8 @@ import javax.inject.Inject;
 public class QuickBooksCallbackController {
 
     public static final String NAME = "softwaremaker_QuickBooksCallbackController";
+    @Inject
+    private Logger log;
 
     @Inject
     private QuickBooksConnectorService quickBooksConnectorService;
@@ -39,7 +42,13 @@ public class QuickBooksCallbackController {
         SecurityContext securityContext = new SecurityContext(systemSession);
         SecurityContext previousSecurityContext = AppContext.getSecurityContext();
         AppContext.setSecurityContext(securityContext);
+        log.info("callBackFromOAuth called");
+        log.info("auth code = "+authCode);
+
+        log.info("RealmId = "+realmId);
+
         try {
+            log.info("Callinf exchangeToken");
             quickBooksConnectorService.exchangeToken(authCode, state, realmId);
         } finally {
             AppContext.setSecurityContext(previousSecurityContext);
