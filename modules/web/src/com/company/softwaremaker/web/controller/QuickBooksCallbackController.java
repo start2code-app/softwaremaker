@@ -37,6 +37,7 @@ public class QuickBooksCallbackController {
     @RequestMapping("/qb/callback")
     public String callBackFromOAuth(@RequestParam("code") String authCode, @RequestParam("state") String state,
                                     @RequestParam("realmId") String realmId) {
+        log.info("callBackFromOAuth called");
         String trustedClientPassword = webAuthConfig.getTrustedClientPassword();
         UserSession systemSession = trustedClientService.getSystemSession(trustedClientPassword);
         SecurityContext securityContext = new SecurityContext(systemSession);
