@@ -20,7 +20,7 @@ public class QuickBooksTokenServiceBean implements QuickBooksTokenService {
     @Override
     public QuickBooksToken findLatestToken(String realmId, View view) {
         return dataManager.load(QuickBooksToken.class)
-                .query("select e from gcsplatform_QuickBooksToken e "
+                .query("select e from softwaremaker_QuickBooksToken e "
                         + "where e.realmId = :realmId "
                         + "order by e.updateTs desc")
                 .cacheable(true)
@@ -32,7 +32,7 @@ public class QuickBooksTokenServiceBean implements QuickBooksTokenService {
 
     @Override
     public String getLatestCsrf() {
-        return dataManager.loadValue("select e.csrf from gcsplatform_QuickBooksCsrf e "
+        return dataManager.loadValue("select e.csrf from softwaremaker_QuickBooksCsrf e "
                 + "order by e.createTs desc", String.class)
                 .optional()
                 .orElseThrow(() -> new QuickBooksException("CSRF was not found"));
